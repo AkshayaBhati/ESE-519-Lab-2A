@@ -64,57 +64,28 @@ Here we are using the PIO0 as the PIO instance. The SM0 state machine will be us
 
 <img width="361" alt="2a2" src="https://user-images.githubusercontent.com/114259992/196343685-3b29457e-4ae9-426d-ab23-cd975bd1d427.png">
 
-The basic circuitry WS2812 LED needs to operate is data pins, a capacitor, a resistoe with value 150 and the supply.  
 
-2.	How do you connect a WS2812 to a microcontroller? 
-
-Ans: Connect GND of microcontroller to GND of WS2812, a gpio pin of microcontroller controlled using PIO to data in (DI) pin of ws2812.
-
-3.	How does a WS2812 translate bits to color values? 
-
-Ans: Bits are sent sequentially to the module to turn on and off the led so fast that we can see a color generated as we wanted.
-
-4.	How do you send a single 1 or 0 bit to the WS2812? 
-
-Ans: Make DI pin high or low using data pin of microcontroller.
-
-5.	How many bits does it take to send a single color value? 
-
-Ans: 8
-
-6.	What happens if you send more bits than this in a packet? 
-
-Ans: It will take data as it comes and will not give correct color.
-
-7.	How do you tell a WS2812 you’re done sending data? 
-
-Ans: Out instruction waits for data and keep side pin low.
-
-8.	How do you send data to more than one WS2812 in a chain?
-
-Ans: Connect DO of 1 module to DI of other and so on.
+The basic circuitry WS2812 LED needs to operate is data pins, a capacitor, a resistoe with value 150 and the supply. You connect a WS2812 to a microcontroller by connecting GNDs of both microcontroller and WS2812, and then to a DI pin of WS2812 the GPIO pin of microcontroller is controlled. It translates bits to color values by making the LED turn On and off really fast so that we can see the color we want as generated. Using the data pin of microcontroller we will make DI high and low. OUT instruction and the low side pin tells a WS2812 that it's data sending is done. To send a single color value 8 bits are used. If we connect DO of one to DI of another module and so on we can send data to more than one WS2812 in a chain. If you send more bits than packet then it will not give the right color. 
 
 
+#### At the end of your writeup of section 3, reflect on the tools you used for modeling from a user interface design perspective. ####
 
-# At the end of your writeup of section 3, reflect on the tools you used for modeling from a user interface design perspective.
+**What were some strengths/weaknesses of working with paper?**
 
+strengths: 
+It is easier to use, Ideas can be jotted down more quickly
 
-o What were some strengths/weaknesses of working with paper?
+weaknesses: 
+If something goes wrong then doing changes is difficult, numbering the sheets
 
-strengths: Flexibility in representation	
+**What were some strengths/weaknesses of working with spreadsheets?**
 
-weaknesses: time consuming and making changes is difficult
+strengths: 
+As compared to others much clear, time efficient, easy to share, easier for large data. 	
 
+weaknesses: 
+It is not good for small concepts. 
 
-o What were some strengths/weaknesses of working with spreadsheets?
+**How might you approach this task using other tools available to you?**
 
-strengths: much cleaner than paper model and saves time		
-
-weaknesses: Regid way of representation (only tabular)
-
-
-o How might you approach this task using other tools available to you?
-
-Flowchart can also be used to show the flow of the code
-
-Include lab questions, screenshots, analysis, etc. (Remember, this is public, so don't put anything here you don't want to share with the world.)
+We can use some softwares for making the timing diagram. We can also use tools to form flow charts of the code for better understanding. We can even use an IDE for the code. 

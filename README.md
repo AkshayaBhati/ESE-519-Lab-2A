@@ -56,7 +56,7 @@ It interacts with the CMake using the pico_generate_pio_header(TARGET PIO_FILE) 
 https://docs.google.com/spreadsheets/d/13l0bCfyE5TmSJbdV2kjk0inrah82hIrh6xzRkMsBtd8/edit?usp=sharing <br>
 
 Few general things to know: <br>
-Here we are using the PIO0 as the PIO instance. The SM0 state machine will be used with the PIO instance. The default pin of mcu or the pin 2 of mcu is the pin this state machine is configured to control. This states machine's clock cycle is 8MHz. the clock divisor that is this state machine's clock scaled down relative to the system clock is 15.625. In the right shift direction this state machine shift bits out of its "Output shift register"? <br>
+Here we are using the PIO0 as the PIO instance. The SM0 state machine will be used with the PIO instance. The default pin of mcu or the pin 2 of mcu is the pin this state machine is configured to control. This states machine's clock cycle is 800KHz. the clock divisor that is this state machine's clock scaled down relative to the system clock is 15.625. In the right shift direction this state machine shift bits out of its "Output shift register"? <br>
 
 ## Paper Model: ##
 

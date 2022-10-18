@@ -4,93 +4,54 @@ ESE 519 LAB 2A
 Akshaya Nidhi Bhati: University of Pennsylvania ESE 5190: Introduction to Embedded Systems, Lab 2A
 LinkedIn: https://www.linkedin.com/in/akshaya-nidhi-bhati-6467841b3/?originalSubdomain=in
 
-Tested on:  HP Pavilion 14, Window 11
-
-To DO: 
+Tested on:  HP Pavilion 14, Windows 11
 
 # Part 3: #
 
 ## PIO ##
  
- After reading chapter 3 in the Pico C SDK manual as given in resources of my setup guide https://github.com/AkshayaBhati/ESE-519-Lab-2-Setup-Guide/blob/main/README.md
+After reading chapter 3 in the Pico C SDK manual as given in resources of my setup guide https://github.com/AkshayaBhati/ESE-519-Lab-2-Setup-Guide/blob/main/README.md
  we can understand how the PIO Module interacts with a WS2812 module. 
  
  **Why is bit-banging impractical on your laptop, despite it having a
 much faster processor than the RP2040?** <br>
-Bit Banging is impractical for our laptop as the processor is not designed for it as it has CPU polling on GPIO pins which affects the real-time performance. Even if our laptop has a faster processor nowadays the layers between the processor and the outside world of hardware and software have also increased with time in size and number.Therefore there are thousands of instructions at a time on a single core. This affects the real-time performance of the system. It's even harder to make sure that GPIO read write occurs on the required cycle. 
+Bit Banging is impractical for our laptop as the processor is not designed for it as it has CPU polling on GPIO pins which affects the real-time performance. Even if our laptop has a faster processor nowadays the layers between the processor and the outside world of hardware and software have also increased with time in size and number.Therefore there are thousands of instructions at a time on a single core. This affects the real-time performance of the system. It's even harder to make sure that GPIO read write occurs on the required cycle. <br>
 
 **What are some cases where directly using the GPIO might be a
-better choice than using the PIO hardware?** <br>
- 
-The cases where directly using the GPIO might be a better choice than using the PIO hardware includes Blinking of the LED. Then we need to toggle GPIOs via hardware interrupts which are less set of instructions than using PIO. PIO will be a better choice than using GPIO for complex tasks. Other than this going through the PIO adds latency when accessing it for one-time or outside the continuous loop. 
-
+better choice than using the PIO hardware?** <br> 
+The cases where directly using the GPIO might be a better choice than using the PIO hardware includes Blinking of the LED. Then we need to toggle GPIOs via hardware interrupts which are less set of instructions than using PIO. PIO will be a better choice than using GPIO for complex tasks. Other than this going through the PIO adds latency when accessing it for one-time or outside the continuous loop. <br>
 
 **How do you get data into a PIO state machine?** <br>
-It is going to OSR from TX FIFO using Pull instruction 
-
-
-How do you get data out of a PIO state machine?
-
-From ISR into RX FIFO out instruction.
-OUT instruction shift bit count bits out of the Output Shift Register (OSR), and write those bits to Destination. Additionally, increase the output shift count by Bit count, saturating at 32.
-
-
-
-Ans: From TX FIFO into OSR using pull instruction.
-
-
-4. How do you get data out of a PIO state machine?  
-
-Ans: From ISR into RX FIFO out instruction.
-
-
-5. How do you program a PIO state machine? 
-
-Ans: PIO state machines execute short, binary programs. The PIO has a total of nine instructions: JMP, WAIT, IN, OUT, PUSH, PULL, MOV, IRQ, and SET. We write program using assembly language.
-
+It is going to OSR from TX FIFO using Pull instruction.<br>
 
 **How do you get data out of a PIO state machine?** <br>
-**How do you program a PIO state machine?** <br>
-In the PIO library the programs are included for UART, I2c ,etc that is for common interfaces so we don't have to write a program for these. The PIO has nine instructions in total mentioned below:
-1.	JMP
-2.	WAIT
-3.	PUSH
-4.	PULL
-5.	IN
-6.	OUT
-7.	SET
-8.	IRQ
-9.	MOV
+It is going to OSR from TX FIFO using pull instruction.<br>
 
-The textual format describing a PIO program is the PIO assembly. Here each command has one instruction in the output. 
+**How do you program a PIO state machine?** <br>
+In the PIO library the programs are included for UART, I2c ,etc that is for common interfaces so we don't have to write a program for these. The PIO has nine instructions in total mentioned below: <br>
+1.	JMP <br>
+2.	WAIT <br>
+3.	PUSH <br>
+4.	PULL <br>
+5.	IN <br>
+6.	OUT <br>
+7.	SET <br>
+8.	IRQ <br>
+9.	MOV <br>
+
+PIO assembly is the textual format describing a PIO program. In the output, each command has one instruction. <br>
 
 **In the example, which low-level C SDK function is directly
 responsible for telling the PIO to set the LED to a new color? How
 is this function accessed from the main “application” code?** <br>
-The low-level C SDK function that is directly responsible for telling the PIO to set the LED to a new color is pio_sm_put_blocking() function. As using this we can directly push data into state machine's TX FIFO as when the TX FIFO is full it stalls the processor this leds to LED being turned on and off when writing 1 and 0 respectively. This function is accessed form the main application code using put_pixel() function. As given in the example code we are calling put_pixel() function. 
-By calling put_pixel() function
-As given in the example code main 
-
+The low-level C SDK function that is directly responsible for telling the PIO to set the LED to a new color is pio_sm_put_blocking() function. As using this we can directly push data into state machine's TX FIFO as when the TX FIFO is full it stalls the processor this leds to LED being turned on and off when writing 1 and 0 respectively. This function is accessed form the main "application" code using put_pixel() function. As given in the example code we are calling put_pixel() function. <br>
 
 **What role does the pioasm “assembler” play in the example, and
 how does this interact with CMake?** <br>
-Pioasm: it is the PIO assembler included in the SDK. The role it plays in the example is as follows: It processes an input text file of PIO assembly that might contain multiple programs and it writes out the ready-to-use assembled programs. These programs containing constant arrays are emitted in the form of C headers.  
-It interacts with the CMake using the pico_generate_pio_header(TARGET PIO_FILE) function as it invokes pioasm and the header is also added in the include path of the target using this. Therefore, we do not have to invoke pioasm in the SDK directly.
+Pioasm: it is the PIO assembler included in the SDK. In the example it processes an input text file of PIO assembly that might contain multiple programs and it writes out the ready-to-use assembled programs. These programs containing constant arrays are emitted in the form of C headers.  
+It interacts with the CMake using the pico_generate_pio_header(TARGET PIO_FILE) function as it invokes pioasm and the header is also added in the include path of the target using this. Therefore, we do not have to invoke pioasm in the SDK directly. <br>
 
-LinkedIn: https://www.linkedin.com/in/sahil-m-39a2671b0
-Tested on:  HP Probook 650 G1 (15.6-inch, 2014), Window 10
-
-6. In the example, which low-level C SDK function is directly responsible for telling the PIO to set the LED to a new color? How is this function accessed from the main “application” code? 
-
-Ans: Pio_sm_put_blocking . Calling put_pixel function. 
-
-
-7. What role does the pioasm “assembler” play in the example, and how does this interact with CMake? 
-
-Ans: The PIO assembler is included with the SDK, and is called pioasm. This program processes a PIO assembly input text file, which may contain multiple programs, and writes out the assembled programs ready for use. For the SDK these assembled programs are emitted in form of C headers, containing constant arrays. the CMake function pico_generate_pio_header(TARGET PIO_FILE) takes care of invoking pioasm and adding the generated header to the include path of the target TARGET for you.
-
-
-# 3.4: Spreadsheet of initial PIO register states
+## Spreadsheet of initial PIO register states ##
 
 https://docs.google.com/spreadsheets/d/18KsNoGRULzMHCPo81uQk1wKcW_Gdkq5YdlxhDTKC2yk/edit?usp=sharing
 

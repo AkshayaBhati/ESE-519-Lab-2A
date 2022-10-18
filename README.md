@@ -67,7 +67,7 @@ Here we are using the PIO0 as the PIO instance. The SM0 state machine will be us
 
 The basic circuitry WS2812 LED needs to operate is data pins, a capacitor, a resistoe with value 150 and the supply. You connect a WS2812 to a microcontroller by connecting GNDs of both microcontroller and WS2812, and then to a DI pin of WS2812 the GPIO pin of microcontroller is controlled. It translates bits to color values by making the LED turn On and off really fast so that we can see the color we want as generated. Using the data pin of microcontroller we will make DI high and low. OUT instruction and the low side pin tells a WS2812 that it's data sending is done. To send a single color value 8 bits are used. If we connect DO of one to DI of another module and so on we can send data to more than one WS2812 in a chain. If you send more bits than packet then it will not give the right color. 
 
-## Part 4: ##
+# Part 4: #
 
 Follow the setup guide https://github.com/AkshayaBhati/ESE-519-Lab-2-Setup-Guide/blob/main/README.md
 After running the Hello World sample code. We will try the LED Blinking sample code. Here in our final code we are combining both of our sample codes to form an output. Here we are taking the input from the keyboard specifically character 'r', 'g' and 'b'. If we are getting an input 'r' then Red LED color will glow, if the input is 'g' then Green LED will glow, and if the input is 'b' then the Blue LED color glow. 
@@ -93,8 +93,12 @@ We will do the above steps again and copy the pico_sdk_import file to the folder
 
 
 
+https://user-images.githubusercontent.com/114259992/196354763-01e3d8c7-099b-4e12-a0ce-7bcc592962af.mp4
 
-###At the end of your writeup of section 3, reflect on the tools you used for modeling from a user interface design perspective. ####
+
+
+
+### At the end of your writeup of section 3, reflect on the tools you used for modeling from a user interface design perspective. ###
 
 **What were some strengths/weaknesses of working with paper?**
 

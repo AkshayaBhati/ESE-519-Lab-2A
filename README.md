@@ -53,47 +53,18 @@ It interacts with the CMake using the pico_generate_pio_header(TARGET PIO_FILE) 
 
 ## Spreadsheet of initial PIO register states ##
 
-https://docs.google.com/spreadsheets/d/18KsNoGRULzMHCPo81uQk1wKcW_Gdkq5YdlxhDTKC2yk/edit?usp=sharing
+https://docs.google.com/spreadsheets/d/13l0bCfyE5TmSJbdV2kjk0inrah82hIrh6xzRkMsBtd8/edit?usp=sharing <br>
 
-1.	Which PIO instance is being used? 
+Few general things to know: <br>
+Here we are using the PIO0 as the PIO instance. The SM0 state machine will be used with the PIO instance. The default pin of mcu or the pin 2 of mcu is the pin this state machine is configured to control. This states machine's clock cycle is 8MHz. the clock divisor that is this state machine's clock scaled down relative to the system clock is 15.625. In the right shift direction this state machine shift bits out of its "Output shift register"? <br>
 
-Ans: Pio0
+## Paper Model: ##
 
-2.	Which state machine is being used with this PIO instance?
+<img width="356" alt="2a1" src="https://user-images.githubusercontent.com/114259992/196343669-858b59a5-b30d-48b3-a3b1-b69cdc92d675.png">
 
-Ans: SM0
+<img width="361" alt="2a2" src="https://user-images.githubusercontent.com/114259992/196343685-3b29457e-4ae9-426d-ab23-cd975bd1d427.png">
 
-3.	Which pin is this state machine configured to control? (you can  either use settings from the example program, or for the Qt Py  LED pin yours will be connected to)  
-
-Ans: Default pin of mcu or pin 2 of mcu
-
-4.	How long is this state machine’s clock cycle? 
-
-Ans: 8MHz
-
-5.	How much is this state machine’s clock scaled down relative to the system clock? (i.e. the “clock divisor”)  
-
-Ans: 125M/(800k*10)=15.625
-
-6.	In which direction will this state machine shift bits out of its  “output shift register”?
-
-Ans: LSB first (right shift)
-
-# 3.5 State machine:
-
-.wrap_target                                          
-bitloop: 			            
- 	out x, 1 side 0 [T3 - 1] ; 	             L1   Shift 1 bit from OSR into x and set side set pio pin low and wait for T3-1 cycles
-	 jmp !x do_zero side 1 [T1 - 1] ;        L2 Jump to do_zero loop if x is zero and set side set pio pin high and wait for T1-1 cycles
-[10:54 PM, 10/17/2022] Sahil Mangaonkar Embedded: do_one:                                                    
- 	jmp bitloop side 1 [T2 - 1] ;	           L3 Jump to bitloop if x was 1 and set side set pio pin high and wait for T2-1 cycles 
- do_zero:                                                   
- 	nop side 0 [T2 - 1] ; 		               L4 No Operation if x was 0 and set side set pio pin low and wait for T2-1 cycles
-.wrap				
-
-1.	What basic circuitry does a WS2812 LED need to operate? 
-
-Ans: Supply (GND and VDD=5v), data pin, a resistor of value 150, a capacitor.
+The basic circuitry WS2812 LED needs to operate is data pins, a capacitor, a resistoe with value 150 and the supply.  
 
 2.	How do you connect a WS2812 to a microcontroller? 
 
@@ -147,11 +118,3 @@ o How might you approach this task using other tools available to you?
 Flowchart can also be used to show the flow of the code
 
 Include lab questions, screenshots, analysis, etc. (Remember, this is public, so don't put anything here you don't want to share with the world.)
-
-
-
-
-Part 3.4 
-
-Spreadsheet :
-https://docs.google.com/spreadsheets/d/13l0bCfyE5TmSJbdV2kjk0inrah82hIrh6xzRkMsBtd8/edit?usp=sharing

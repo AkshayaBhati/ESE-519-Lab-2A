@@ -4,6 +4,8 @@ ESE 519 LAB 2A
 Akshaya Nidhi Bhati: University of Pennsylvania ESE 5190: Introduction to Embedded Systems, Lab 2A
 LinkedIn: https://www.linkedin.com/in/akshaya-nidhi-bhati-6467841b3/?originalSubdomain=in
 
+Tested on:  HP Pavilion 14, Window 11
+
 To DO: 
 
 # Part 3: #
@@ -15,25 +17,36 @@ To DO:
  
  **Why is bit-banging impractical on your laptop, despite it having a
 much faster processor than the RP2040?** <br>
-Bit Banging is impractical for our laptop as the processor is not designed for it as it has CPU polling on GPIO pins which affects the real-time performance. Even if our laptop has a faster processor nowadays the layers between the processor and the outside world of hardware and software have also increased with time in size and number.
+Bit Banging is impractical for our laptop as the processor is not designed for it as it has CPU polling on GPIO pins which affects the real-time performance. Even if our laptop has a faster processor nowadays the layers between the processor and the outside world of hardware and software have also increased with time in size and number.Therefore there are thousands of instructions at a time on a single core. This affects the real-time performance of the system. It's even harder to make sure that GPIO read write occurs on the required cycle. 
 
 **What are some cases where directly using the GPIO might be a
 better choice than using the PIO hardware?** <br>
+ 
+The cases where directly using the GPIO might be a better choice than using the PIO hardware includes Blinking of the LED. Then we need to toggle GPIOs via hardware interrupts which are less set of instructions than using PIO. PIO will be a better choice than using GPIO for complex tasks. Other than this going through the PIO adds latency when accessing it for one-time or outside the continuous loop. 
 
- a. Accessing a pin for a one-time use or outside of a continuous loop. Going through the PIO would add latency.
-   b. Low-priority tasks which can be pre-empted by higher priority ones can be bit-banged. 
-   c. Designing a system to cut costs: FOr extremely low cost systems that do not require significant real time performance, bit banging could be preferred to 
-      offset the investment in a dedicated hardware module. 
-The cases where directly using the GPIO might be a better choice than using the PIO hardware includes Blinking of the LED. Then we need to toggle GPIOs via hardware interrupts which are less set of instructions than using PIO. PIO will be a better choice than using GPIO for complex tasks.
-The cases where directly using the GPIO might be a better choice than using the PIO hardware includes Blinking of the LED. Then we need to toggle GPIOs via hardware interrupts which are less set of instructions than using PIO. PIO will be a better choice than using GPIO for complex tasks.
 
 **How do you get data into a PIO state machine?** <br>
 It is going to OSR from TX FIFO using Pull instruction 
-The data is transmitted from FIFO to a PIO state machine. PULL instruction loads a 32-bit word from the TX FIFO into the OSR.
+
 
 How do you get data out of a PIO state machine?
 
+From ISR into RX FIFO out instruction.
 OUT instruction shift bit count bits out of the Output Shift Register (OSR), and write those bits to Destination. Additionally, increase the output shift count by Bit count, saturating at 32.
+
+
+
+Ans: From TX FIFO into OSR using pull instruction.
+
+
+4. How do you get data out of a PIO state machine?  
+
+Ans: From ISR into RX FIFO out instruction.
+
+
+5. How do you program a PIO state machine? 
+
+Ans: PIO state machines execute short, binary programs. The PIO has a total of nine instructions: JMP, WAIT, IN, OUT, PUSH, PULL, MOV, IRQ, and SET. We write program using assembly language.
 
 
 **How do you get data out of a PIO state machine?** <br>
@@ -66,34 +79,6 @@ It interacts with the CMake using the pico_generate_pio_header(TARGET PIO_FILE) 
 
 LinkedIn: https://www.linkedin.com/in/sahil-m-39a2671b0
 Tested on:  HP Probook 650 G1 (15.6-inch, 2014), Window 10
-
-# Brief responses to the reading questions in 3.2:
-1. Why is bit-banging impractical on your laptop, despite it having a much faster processor than the RP2040?
-
-Ans: With increase in the speed of processors, the layers between hardware and software between the processor and the outside world have also increased in size and number.  Because of which, the processors keep hundreds of thousands of instructions on a single core at a time. Hence it’s difficult to switch rapidly between hard real time tasks.
-
-Above certain speeds — say a factor of 1000 below the processor clock speed — IRQs become impractical, in part due to the timing uncertainty of actually entering an interrupt handler. It’s difficult to write in assembly, trying to make sure the GPIO reading and writing happens on the exact cycle required. your processor is now busy doing the "bit-banging", and cannot be used for other tasks. If your processor is interrupted even for a few microseconds to attend to one of the hard peripherals it is also responsible for, this can be fatal to the timing of any bit-banged protocol.
-
-
-2. What are some cases where directly using the GPIO might be a  better choice than using the PIO hardware?
-
-Ans: Simple task such as LED blinking is better done with GPIO than using pio where we’ll send data into state machine having more sets of instruction than what we need to toggle LED with GPIO. PIO suits better for performing complex tasks efficiently.
-
-
-3. How do you get data into a PIO state machine? 
-
-Ans: From TX FIFO into OSR using pull instruction.
-
-
-4. How do you get data out of a PIO state machine?  
-
-Ans: From ISR into RX FIFO out instruction.
-
-
-5. How do you program a PIO state machine? 
-
-Ans: PIO state machines execute short, binary programs. The PIO has a total of nine instructions: JMP, WAIT, IN, OUT, PUSH, PULL, MOV, IRQ, and SET. We write program using assembly language.
-
 
 6. In the example, which low-level C SDK function is directly responsible for telling the PIO to set the LED to a new color? How is this function accessed from the main “application” code? 
 
